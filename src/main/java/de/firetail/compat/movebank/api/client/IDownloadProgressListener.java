@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package de.firetail.compat.mulletrestclient;
+package de.firetail.compat.movebank.api.client;
 
 /**
  *

@@ -1,4 +1,4 @@
-package de.firetail.compat.mulletrestclient;
+package de.firetail.compat.movebank.api.client;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,18 +16,18 @@ public class StudyBrowser {
 	private List<Record> sensors;
 	private Map<String, List<Record>> attributesBySensorType = new TreeMap<String, List<Record>>();
 
-	public StudyBrowser(String studyId, MulletRestClient client) throws Exception {
+	public StudyBrowser(String studyId, MovebankApiClient client) throws Exception {
 		this.studyId = studyId;
 		init(client);
 	}
 
-	protected void init( MulletRestClient client) throws Exception {
+	protected void init( MovebankApiClient client) throws Exception {
 		readStudy(client);
 		readSensors(client);
 		readStudyAttributes(client);
 	}
 
-	private void readStudy( MulletRestClient client) throws Exception {
+	private void readStudy( MovebankApiClient client) throws Exception {
 		RequestBuilderStudy request = new RequestBuilderStudy();
 		request.setId(studyId);
 		RecordCollector collector = new RecordCollector();
@@ -37,11 +37,11 @@ public class StudyBrowser {
 		study = collector.toSingleRecord();
 	}
 
-	private void readSensors( MulletRestClient client) throws Exception {
+	private void readSensors( MovebankApiClient client) throws Exception {
 		sensors = client.readAll(new RequestBuilderSensor(studyId));
 	}
 
-	private void readStudyAttributes( MulletRestClient client) throws Exception {
+	private void readStudyAttributes( MovebankApiClient client) throws Exception {
 		Set<String> sensorTypeIds = new TreeSet<String>();
 		for ( Record sensor : getSensors())
 			sensorTypeIds.add(sensor.getValue(Constants.Attributes.SENSOR_TYPE_ID));

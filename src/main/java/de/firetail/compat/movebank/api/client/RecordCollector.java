@@ -1,4 +1,4 @@
-package de.firetail.compat.mulletrestclient;
+package de.firetail.compat.movebank.api.client;
 
 import java.util.ArrayList;
 import java.util.List;

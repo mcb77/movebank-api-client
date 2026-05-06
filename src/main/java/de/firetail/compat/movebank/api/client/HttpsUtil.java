@@ -1,4 +1,4 @@
-package de.firetail.compat.mulletrestclient;
+package de.firetail.compat.movebank.api.client;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;

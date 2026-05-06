@@ -1,10 +1,8 @@
-# mullet-rest-client
+# movebank-api-client
 ![proto-mullet.jpg](proto-mullet.jpg)
 
 
 A Java client library for the [Movebank REST API (v1)](https://github.com/movebank/movebank-api-doc/blob/master/movebank-api.md).
-
-Named _mullet_ because Movebank is a bit dated — business in the front, party animal tracking in the back.
 
 ---
 
@@ -12,14 +10,14 @@ Named _mullet_ because Movebank is a bit dated — business in the front, party 
 
 **Gradle:**
 ```groovy
-implementation 'de.firetail:mullet-rest-client:0.0.2'
+implementation 'de.firetail:movebank-api-client:0.0.2'
 ```
 
 **Maven:**
 ```xml
 <dependency>
     <groupId>de.firetail</groupId>
-    <artifactId>mullet-rest-client</artifactId>
+    <artifactId>movebank-api-client</artifactId>
     <version>0.0.2</version>
 </dependency>
 ```
@@ -29,7 +27,7 @@ implementation 'de.firetail:mullet-rest-client:0.0.2'
 ## Quick Start
 
 ```java
-MulletRestClient client = new MulletRestClient(
+MovebankApiClient client = new MovebankApiClient(
     "https://www.movebank.org/movebank",
     "your-username",
     "your-password",
@@ -48,7 +46,7 @@ for (Record study : studies) {
 
 ## Authentication
 
-Pass your Movebank username and password to the `MulletRestClient` constructor. Credentials are sent as HTTP headers on every request. The client maintains a session cookie automatically after the first successful response.
+Pass your Movebank username and password to the `MovebankApiClient` constructor. Credentials are sent as HTTP headers on every request. The client maintains a session cookie automatically after the first successful response.
 
 ---
 
@@ -178,14 +176,14 @@ List<Record> deployments = client.readAll(new RequestBuilderDeployment(studyId))
 
 Some Movebank studies require you to accept a license agreement before data is returned. The API signals this with an `accept-license` response header, and sends the license text as the response body.
 
-The `MulletRestClient` constructor accepts a `LicenseChecker` that decides whether to accept:
+The `MovebankApiClient` constructor accepts a `LicenseChecker` that decides whether to accept:
 
 ```java
 // Programmatic acceptance (e.g. in batch jobs after prior review)
 LicenseChecker checker = html -> true;
 
 // Swing dialog (prompts the user interactively)
-MulletRestClient client = new MulletRestClient(baseUrl, user, password, ownerFrame);
+MovebankApiClient client = new MovebankApiClient(baseUrl, user, password, ownerFrame);
 ```
 
 If the license is declined, a `LicenseException` is thrown.
@@ -194,15 +192,15 @@ If the license is declined, a `LicenseException` is thrown.
 
 ## HTTP and SSL
 
-Both `http://` and `https://` base URLs are supported. The live Movebank API requires HTTPS; plain HTTP is useful when pointing the client at a local mirror such as [mullet-server](https://github.com/mcb77/mullet-server).
+Both `http://` and `https://` base URLs are supported. The live Movebank API requires HTTPS; plain HTTP is useful when pointing the client at a local mirror such as [movebank-mirror-api](https://github.com/mcb77/movebank-mirror-api).
 
 ```java
 // Live Movebank (HTTPS)
-MulletRestClient client = new MulletRestClient(
+MovebankApiClient client = new MovebankApiClient(
     "https://www.movebank.org/movebank", user, password, licenseChecker);
 
 // Local mirror (plain HTTP)
-MulletRestClient client = new MulletRestClient(
+MovebankApiClient client = new MovebankApiClient(
     "http://localhost:8080/movebank", user, password, licenseChecker);
 ```
 

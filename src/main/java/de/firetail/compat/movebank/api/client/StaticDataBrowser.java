@@ -1,4 +1,4 @@
-package de.firetail.compat.mulletrestclient;
+package de.firetail.compat.movebank.api.client;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ public class StaticDataBrowser {
 
 	List<Record> sensorTypes;
 
-	public StaticDataBrowser( MulletRestClient client) throws Exception {
+	public StaticDataBrowser( MovebankApiClient client) throws Exception {
 		sensorTypes = client.readAll(new RequestBuilderSensorType());
 	}
 

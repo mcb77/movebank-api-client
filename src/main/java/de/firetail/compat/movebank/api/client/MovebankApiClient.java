@@ -1,4 +1,4 @@
-package de.firetail.compat.mulletrestclient;
+package de.firetail.compat.movebank.api.client;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -17,11 +17,11 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class MulletRestClient {
+public class MovebankApiClient {
 
 	private static final String CHARSET = "UTF-8";
 
-	private String mulletBaseUrl;
+	private String movebankBaseUrl;
 	private String user;
 	private String password;
 	private LicenseChecker licenseChecker;
@@ -29,19 +29,19 @@ public class MulletRestClient {
 
 	private String sessionId;
 
-	public MulletRestClient( String mulletBaseUrl, String user, String password, LicenseChecker licenseChecker)
+	public MovebankApiClient(String movebankBaseUrl, String user, String password, LicenseChecker licenseChecker)
 			throws Exception {
-		if ( mulletBaseUrl.endsWith("/"))
-			mulletBaseUrl = mulletBaseUrl.substring(0, mulletBaseUrl.length() - 1);
-		this.mulletBaseUrl = mulletBaseUrl;
+		if ( movebankBaseUrl.endsWith("/"))
+			movebankBaseUrl = movebankBaseUrl.substring(0, movebankBaseUrl.length() - 1);
+		this.movebankBaseUrl = movebankBaseUrl;
 		this.user = user;
 		this.password = password;
 		this.licenseChecker = licenseChecker;
 		this.disableSslChecks = false;
 	}
 
-	public MulletRestClient( String mulletBaseUrl, String user, String password, final Frame owner) throws Exception {
-		this( mulletBaseUrl, user, password, new LicenseChecker() {
+	public MovebankApiClient(String movebankBaseUrl, String user, String password, final Frame owner) throws Exception {
+		this( movebankBaseUrl, user, password, new LicenseChecker() {
 			public boolean licenseAccepted(String html) {
 				return LicenseDialog.acceptLicense(owner, html);
 			}
@@ -49,7 +49,7 @@ public class MulletRestClient {
 	}
 
 	private String getDirectReadBaseUrl() {
-		return mulletBaseUrl + "/service/direct-read?";
+		return movebankBaseUrl + "/service/direct-read?";
 	}
 
 	/*
