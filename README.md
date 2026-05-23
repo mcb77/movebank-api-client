@@ -1,6 +1,9 @@
 # movebank-api-client
 ![proto-mullet.jpg](proto-mullet.jpg)
 
+[![CI](https://github.com/mcb77/movebank-api-client/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/mcb77/movebank-api-client/actions/workflows/ci.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/de.firetail.compat.movebank/movebank-api-client)](https://central.sonatype.com/artifact/de.firetail.compat.movebank/movebank-api-client)
+[![license](https://img.shields.io/badge/license-LGPL--2.1-blue.svg)](LICENSE)
 
 A Java client library for the [Movebank REST API (v1)](https://github.com/movebank/movebank-api-doc/blob/master/movebank-api.md).
 
