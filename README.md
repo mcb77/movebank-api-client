@@ -49,7 +49,7 @@ for (Record study : studies) {
 
 ## Authentication
 
-Pass your Movebank username and password to the `MovebankApiClient` constructor. Credentials are sent as HTTP headers on every request. The client maintains a session cookie automatically after the first successful response.
+Pass your Movebank username and password to the `MovebankApiClient` constructor. Credentials are sent as HTTP headers on every request, never in the URL, so request URLs are safe to log. The client maintains a session cookie automatically after the first successful response.
 
 ---
 
@@ -190,6 +190,48 @@ MovebankApiClient client = new MovebankApiClient(baseUrl, user, password, ownerF
 ```
 
 If the license is declined, a `LicenseException` is thrown.
+
+---
+
+## Errors, Timeouts and Retries
+
+### Failures are exceptions
+
+- **Non-200 responses** throw `MovebankApiClient.HttpException`. `getResponseCode()` gives the status, and `getResponseBody()` gives Movebank's error text (truncated to 4 KB), which is also included in the exception message, e.g. `403: No permission ...`.
+- **Truncated responses** throw an `IOException`: a connection that drops or times out mid-response is never reported as a complete, shorter result. When streaming with `sendRequest(request, callback)`, records delivered before the failure have already reached your callback, and `end()` is not called. Discard or roll back that partial result.
+
+> Before 0.0.3, a mid-stream I/O error was printed to stderr and the call returned normally, indistinguishable from a complete response.
+
+### Timeouts
+
+```java
+client.setTimeouts(60_000, 30 * 60_000);   // connect ms, read ms (these are the defaults)
+```
+
+The read timeout bounds each blocking read, i.e. the longest silence tolerated mid-response. It is generous by default because Movebank can take minutes before it starts streaming a large event query. `0` means wait forever.
+
+### Retries on rate limiting
+
+Movebank rate-limits accounts that send requests too quickly (HTTP `429`). The client retries `429` and `503` responses automatically, honouring a `Retry-After` header when present and otherwise backing off exponentially:
+
+```java
+client.setRetryPolicy(5, 30_000, 15 * 60_000);   // max retries, initial delay ms, max delay ms (defaults)
+client.setRetryPolicy(0, 0, 0);                   // disable retries
+```
+
+Retries sleep in the calling thread, with the defaults for up to about 15 minutes in total per request. An interrupt ends the wait with an `InterruptedException`. Other errors (`403`, `404`, `500`, ...) are not retried.
+
+---
+
+## Logging
+
+The client logs via [SLF4J](https://www.slf4j.org/) and never writes to stdout. Request URLs are logged at `DEBUG` and retries at `WARN`. Add an SLF4J binding to your application to see them, e.g.:
+
+```groovy
+runtimeOnly 'org.slf4j:slf4j-simple:2.0.16'
+```
+
+Without a binding, log output is discarded and SLF4J prints a one-time "no providers" notice.
 
 ---
 
