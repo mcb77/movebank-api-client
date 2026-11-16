@@ -49,7 +49,7 @@ publishing {
 
             pom {
                 name = 'Movebank API Client'
-                description = 'An API client for compatibility support.'
+                description = 'A Java client library for the Movebank REST API (v1)'
                 url = 'https://github.com/mcb77/movebank-api-client'
 
                 licenses {
