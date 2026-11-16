@@ -265,6 +265,17 @@ Requires Java 21 and Gradle (or use the included wrapper).
 ./gradlew build
 ```
 
+## Related projects
+
+Together these form a toolchain for working with Movebank data offline:
+
+- **movebank-api-client** (this repository): Java client for the Movebank REST API
+- [movebank-mirror](https://github.com/mcb77/movebank-mirror): mirrors Movebank studies to plain files on your disk; resumable, incremental
+- [movebank-mirror-api](https://github.com/mcb77/movebank-mirror-api): serves the Movebank REST API from a local mirror, a drop-in for `move`/`move2` and the Java client
+- [movebank-rocker](https://github.com/mcb77/movebank-rocker): pinned R environment (rocker/geospatial + move, move2, moveVis, sf)
+
+Background: [Keep a Movebank study on your own computer](https://www.schaeuffelhut-berger.de/en/blog/keep-a-movebank-study-on-your-own-computer/?ref=github)
+
 ---
 
 ## License
