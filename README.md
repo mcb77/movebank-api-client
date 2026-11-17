@@ -13,7 +13,7 @@ A Java client library for the [Movebank REST API (v1)](https://github.com/moveba
 
 **Gradle:**
 ```groovy
-implementation 'de.firetail.compat.movebank:movebank-api-client:0.0.3'
+implementation 'de.firetail.compat.movebank:movebank-api-client:0.0.4'
 ```
 
 **Maven:**
@@ -21,7 +21,7 @@ implementation 'de.firetail.compat.movebank:movebank-api-client:0.0.3'
 <dependency>
     <groupId>de.firetail.compat.movebank</groupId>
     <artifactId>movebank-api-client</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
