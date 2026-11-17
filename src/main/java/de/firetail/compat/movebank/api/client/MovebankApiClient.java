@@ -6,12 +6,12 @@ import com.opencsv.CSVReaderBuilder;
 
 import java.awt.Frame;
 import java.io.*;
-import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.Arrays;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -168,7 +168,9 @@ public class MovebankApiClient {
 			String termsHtml = "<html>" + new String(termsBytes, "UTF-8") + "</html>";
 			boolean accepted = licenseChecker.licenseAccepted(termsHtml);
 			if (accepted) {
-				String md5 = new BigInteger(1, MessageDigest.getInstance("MD5").digest(termsBytes)).toString(16);
+				// Always 32 hex digits: Movebank rejects a hash without its leading zeros
+				// ("Incorrect md5 hash"), which BigInteger.toString(16) would drop.
+				String md5 = HexFormat.of().formatHex(MessageDigest.getInstance("MD5").digest(termsBytes));
 				return sendRequest(requestParameters, md5);
 			} else
 				throw new LicenseException();

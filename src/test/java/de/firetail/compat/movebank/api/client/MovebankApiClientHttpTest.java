@@ -134,6 +134,26 @@ class MovebankApiClientHttpTest {
 	}
 
 	@Test
+	void licenseMd5KeepsLeadingZeros() throws Exception {
+		// MD5 of these terms is 00dfb108f40bf9be7707736ce218b221: as a number it would lose
+		// both leading zeros, and Movebank answers 403 "Incorrect md5 hash".
+		String terms = "<p>License terms 127</p>";
+		String[] acceptedQuery = new String[1];
+		script.add(ex -> {
+			ex.getResponseHeaders().add("accept-license", "true");
+			send(ex, 200, terms);
+		});
+		script.add(ex -> {
+			acceptedQuery[0] = ex.getRequestURI().getRawQuery();
+			send(ex, 200, CSV);
+		});
+		List<Record> records = readStudies();
+		assertEquals(2, records.size());
+		assertTrue(acceptedQuery[0].contains("license-md5=00dfb108f40bf9be7707736ce218b221"),
+				"query was: " + acceptedQuery[0]);
+	}
+
+	@Test
 	void stalledResponseTimesOut() {
 		client.setTimeouts(1_000, 200);
 		script.add(ex -> {
